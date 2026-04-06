@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.finance_app.finance_app.AdminControllerTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-04-05T13:34:23" hostname="Mac.lan" time="0.159">
+  <properties/>
+  <testcase name="createUser_ValidationError_ReturnsBadRequest()" classname="com.example.finance_app.finance_app.AdminControllerTest" time="0.086"/>
+  <testcase name="updateStatus_UserNotFound_ReturnsNotFound()" classname="com.example.finance_app.finance_app.AdminControllerTest" time="0.007"/>
+  <testcase name="updateRoles_EmptyRoles_ReturnsBadRequest()" classname="com.example.finance_app.finance_app.AdminControllerTest" time="0.027"/>
+  <testcase name="createUser_Success()" classname="com.example.finance_app.finance_app.AdminControllerTest" time="0.009"/>
+  <testcase name="updateRoles_Success()" classname="com.example.finance_app.finance_app.AdminControllerTest" time="0.004"/>
+  <testcase name="getAllUsers_NonAdmin_Forbidden()" classname="com.example.finance_app.finance_app.AdminControllerTest" time="0.004"/>
+  <testcase name="updateRoles_MissingRolesField_ReturnsBadRequest()" classname="com.example.finance_app.finance_app.AdminControllerTest" time="0.003"/>
+  <testcase name="getAllUsers_EmptyList_ReturnsEmpty()" classname="com.example.finance_app.finance_app.AdminControllerTest" time="0.003"/>
+  <testcase name="updateStatus_Success()" classname="com.example.finance_app.finance_app.AdminControllerTest" time="0.004"/>
+  <testcase name="getAllUsers_ReturnsList()" classname="com.example.finance_app.finance_app.AdminControllerTest" time="0.003"/>
+  <testcase name="updateRoles_InvalidRoleName_ReturnsBadRequest()" classname="com.example.finance_app.finance_app.AdminControllerTest" time="0.003"/>
+  <system-out><![CDATA[19:04:22.297 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.example.finance_app.finance_app.AdminControllerTest]: AdminControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+19:04:22.346 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.example.finance_app.finance_app.FinanceAppApplication for test class com.example.finance_app.finance_app.AdminControllerTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.1.5)
+
+2026-04-05T19:04:22.514+05:30  INFO 9441 --- [    Test worker] c.e.f.finance_app.AdminControllerTest    : Starting AdminControllerTest using Java 21.0.9 with PID 9441 (started by biswadeep in /Users/biswadeep/Desktop/Finance_Assignment/finance_app)
+2026-04-05T19:04:22.515+05:30  INFO 9441 --- [    Test worker] c.e.f.finance_app.AdminControllerTest    : No active profile set, falling back to 1 default profile: "default"
+2026-04-05T19:04:23.351+05:30  INFO 9441 --- [    Test worker] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@20864cd1, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@5c839677, org.springframework.security.web.context.SecurityContextHolderFilter@5e51ec2e, org.springframework.security.web.header.HeaderWriterFilter@2e3cd732, org.springframework.security.web.authentication.logout.LogoutFilter@4be12f6c, com.example.finance_app.finance_app.config.JwtAuthenticationFilter@b7d2d51, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4c65d8e3, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@69ce14e6, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3193e21d, org.springframework.security.web.session.SessionManagementFilter@52b32b70, org.springframework.security.web.access.ExceptionTranslationFilter@27bb74e1, org.springframework.security.web.access.intercept.AuthorizationFilter@1fee4278]
+2026-04-05T19:04:23.535+05:30  INFO 9441 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-04-05T19:04:23.535+05:30  INFO 9441 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-04-05T19:04:23.535+05:30  INFO 9441 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-04-05T19:04:23.550+05:30  INFO 9441 --- [    Test worker] c.e.f.finance_app.AdminControllerTest    : Started AdminControllerTest in 1.171 seconds (process running for 1.614)
+]]></system-out>
+  <system-err><![CDATA[WARNING: A Java agent has been loaded dynamically (/Users/biswadeep/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.14.9/dfb8707031008535048bad2b69735f46d0b6c5e5/byte-buddy-agent-1.14.9.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+]]></system-err>
+</testsuite>
