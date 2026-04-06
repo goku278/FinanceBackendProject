@@ -62,7 +62,6 @@ class FinancialRecordServiceTest {
                 .build();
     }
 
-    // ========== createRecord ==========
     @Test
     void createRecord_Success() {
         when(recordRepository.save(any(FinancialRecord.class))).thenAnswer(invocation -> {
@@ -85,7 +84,6 @@ class FinancialRecordServiceTest {
         verify(recordRepository).save(any(FinancialRecord.class));
     }
 
-    // ========== updateRecord ==========
     @Test
     void updateRecord_Success() {
         when(recordRepository.findById(recordId)).thenReturn(Optional.of(testRecord));
@@ -112,7 +110,6 @@ class FinancialRecordServiceTest {
         verify(recordRepository, never()).save(any());
     }
 
-    // ========== deleteRecord (soft delete) ==========
     @Test
     void deleteRecord_Success() {
         when(recordRepository.findById(recordId)).thenReturn(Optional.of(testRecord));
@@ -134,34 +131,32 @@ class FinancialRecordServiceTest {
         verify(recordRepository, never()).save(any());
     }
 
-    // ========== getAllRecords ==========
     @Test
     void getAllRecords_WithFilters_ReturnsPage() {
         Pageable pageable = PageRequest.of(0, 10);
         Page<FinancialRecord> expectedPage = new PageImpl<>(List.of(testRecord), pageable, 1);
-        when(recordRepository.findAllWithFilters(any(), any(), any(), any(), eq(pageable)))
+        when(recordRepository.findAllWithFilters(any(), any(), any(), any(), any(), eq(pageable)))
                 .thenReturn(expectedPage);
 
         Page<FinancialRecord> result = recordService.getAllRecords(
                 LocalDate.of(2025, 1, 1), LocalDate.of(2025, 12, 31),
-                "Groceries", TransactionType.EXPENSE, pageable);
+                "Groceries", TransactionType.EXPENSE, "INCOME", pageable);
 
         assertNotNull(result);
         assertEquals(1, result.getTotalElements());
         assertEquals(testRecord, result.getContent().get(0));
-        verify(recordRepository).findAllWithFilters(any(), any(), any(), any(), eq(pageable));
+        verify(recordRepository).findAllWithFilters(any(), any(), any(), any(), any(), eq(pageable));
     }
 
     @Test
     void getAllRecords_NoFilters_ReturnsPage() {
         Pageable pageable = PageRequest.of(0, 10);
-        when(recordRepository.findAllWithFilters(null, null, null, null, pageable))
+        when(recordRepository.findAllWithFilters(null, null, null, null, null, pageable))
                 .thenReturn(new PageImpl<>(Collections.emptyList()));
-        Page<FinancialRecord> result = recordService.getAllRecords(null, null, null, null, pageable);
+        Page<FinancialRecord> result = recordService.getAllRecords(null, null, null, null, null, pageable);
         assertTrue(result.isEmpty());
     }
 
-    // ========== getSummary ==========
     @Test
     void getSummary_WithBothIncomeAndExpense_ReturnsCorrect() {
         when(recordRepository.sumByType(TransactionType.INCOME)).thenReturn(new BigDecimal("5000"));
@@ -210,7 +205,6 @@ class FinancialRecordServiceTest {
         assertEquals(BigDecimal.ZERO, summary.getNetBalance());
     }
 
-    // ========== getCategoryTotals ==========
     @Test
     void getCategoryTotals_ReturnsList() {
         List<Object[]> mockResults = List.of(
@@ -235,7 +229,6 @@ class FinancialRecordServiceTest {
         assertTrue(totals.isEmpty());
     }
 
-    // ========== getRecentActivity ==========
     @Test
     void getRecentActivity_ReturnsTop5() {
         List<FinancialRecord> mockRecords = List.of(testRecord);
@@ -260,7 +253,6 @@ class FinancialRecordServiceTest {
         assertTrue(recent.isEmpty());
     }
 
-    // ========== getMonthlyTrends ==========
     @Test
     void getMonthlyTrends_ReturnsList() {
         List<Object[]> mockResults = List.of(

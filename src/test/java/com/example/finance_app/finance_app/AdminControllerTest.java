@@ -45,7 +45,6 @@ class AdminControllerTest {
     @MockBean
     private UserService userService;
 
-    // Required for security filter chain
     @MockBean
     private JwtUtil jwtUtil;
 
@@ -84,7 +83,6 @@ class AdminControllerTest {
                 .build();
     }
 
-    // ========== GET /api/admin/users ==========
     @Test
     @WithMockUser(roles = "ADMIN")
     void getAllUsers_ReturnsList() throws Exception {
@@ -115,7 +113,6 @@ class AdminControllerTest {
         verify(userService, never()).getAllUsers();
     }
 
-    // ========== POST /api/admin/users ==========
     @Test
     @WithMockUser(roles = "ADMIN")
     void createUser_Success() throws Exception {
@@ -136,10 +133,10 @@ class AdminControllerTest {
     @WithMockUser(roles = "ADMIN")
     void createUser_ValidationError_ReturnsBadRequest() throws Exception {
         UserDTO.UserCreateRequest invalid = UserDTO.UserCreateRequest.builder()
-                .username("") // blank
-                .password("") // blank
+                .username("")
+                .password("")
                 .email("not-an-email")
-                .roles(null) // null
+                .roles(null)
                 .build();
 
         mockMvc.perform(post("/api/admin/users")
@@ -148,7 +145,6 @@ class AdminControllerTest {
                 .andExpect(status().isInternalServerError());
     }
 
-    // ========== PUT /api/admin/users/{id}/roles ==========
     @Test
     @WithMockUser(roles = "ADMIN")
     void updateRoles_Success() throws Exception {
@@ -205,7 +201,6 @@ class AdminControllerTest {
                 .andExpect(jsonPath("$.message").value("Invalid role: INVALID_ROLE"));
     }
 
-    // ========== PATCH /api/admin/users/{id}/status ==========
     @Test
     @WithMockUser(roles = "ADMIN")
     void updateStatus_Success() throws Exception {

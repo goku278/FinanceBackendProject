@@ -56,11 +56,9 @@ class RefreshTokenServiceTest {
                 .revoked(false)
                 .build();
 
-        // Set the refresh expiration value (7 days in milliseconds)
         ReflectionTestUtils.setField(refreshTokenService, "refreshExpiration", 604800000L);
     }
 
-    // ========== createRefreshToken ==========
     @Test
     void createRefreshToken_Success() {
         when(userRepository.findById(userId)).thenReturn(Optional.of(testUser));
@@ -97,7 +95,6 @@ class RefreshTokenServiceTest {
         verify(refreshTokenRepository, never()).save(any());
     }
 
-    // ========== verifyRefreshToken ==========
     @Test
     void verifyRefreshToken_Success() {
         when(refreshTokenRepository.findByTokenAndRevokedFalse(tokenString))
@@ -124,7 +121,6 @@ class RefreshTokenServiceTest {
 
     @Test
     void verifyRefreshToken_TokenExpired_ThrowsTokenRefreshExceptionAndRevokes() {
-        // Create an expired token
         RefreshToken expiredToken = RefreshToken.builder()
                 .id(1L)
                 .token(tokenString)
@@ -145,7 +141,6 @@ class RefreshTokenServiceTest {
         verify(refreshTokenRepository).save(expiredToken);
     }
 
-    // ========== revokeRefreshToken ==========
     @Test
     void revokeRefreshToken_TokenExists_RevokesAndSaves() {
         when(refreshTokenRepository.findByTokenAndRevokedFalse(tokenString))

@@ -1,5 +1,6 @@
 package com.example.finance_app.finance_app;
 
+
 import com.example.finance_app.finance_app.config.CustomUserDetailsService;
 import com.example.finance_app.finance_app.config.JwtUtil;
 import com.example.finance_app.finance_app.config.SecurityConfig;
@@ -8,6 +9,7 @@ import com.example.finance_app.finance_app.entity.FinancialRecord;
 import com.example.finance_app.finance_app.exceptions.GlobalExceptionHandler;
 import com.example.finance_app.finance_app.models.TransactionType;
 import com.example.finance_app.finance_app.models.dto.FinancialRecordDTO;
+import com.example.finance_app.finance_app.repository.BlacklistedTokenRepository;
 import com.example.finance_app.finance_app.service.FinancialRecordService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,16 +30,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(FinancialRecordController.class)
-@Import({SecurityConfig.class, GlobalExceptionHandler.class})  // Import both security and exception handler
+@Import({SecurityConfig.class, GlobalExceptionHandler.class})
 class FinancialRecordControllerTest {
 
     @Autowired
@@ -54,6 +54,9 @@ class FinancialRecordControllerTest {
 
     @MockBean
     private CustomUserDetailsService customUserDetailsService;
+
+    @MockBean
+    private BlacklistedTokenRepository blacklistedTokenRepository;
 
     private FinancialRecord testRecord;
     private FinancialRecordDTO.RecordRequest validRequest;
@@ -80,12 +83,11 @@ class FinancialRecordControllerTest {
                 .build();
     }
 
-    // ========== GET /api/records ==========
     @Test
     @WithMockUser(roles = "ANALYST")
     void getAllRecords_AsAnalyst_ReturnsPage() throws Exception {
         Page<FinancialRecord> page = new PageImpl<>(List.of(testRecord), PageRequest.of(0, 20), 1);
-        when(recordService.getAllRecords(any(), any(), any(), any(), any())).thenReturn(page);
+        when(recordService.getAllRecords(any(), any(), any(), any(), any(), any())).thenReturn(page);
 
         mockMvc.perform(get("/api/records")
                         .param("startDate", "2025-01-01")
@@ -105,7 +107,7 @@ class FinancialRecordControllerTest {
     @WithMockUser(roles = "ANALYST")
     void getAllRecords_WithoutFilters_ReturnsPage() throws Exception {
         Page<FinancialRecord> emptyPage = new PageImpl<>(List.of(), PageRequest.of(0, 20), 0);
-        when(recordService.getAllRecords(any(), any(), any(), any(), any())).thenReturn(emptyPage);
+        when(recordService.getAllRecords(any(), any(), any(), any(), any(), any())).thenReturn(emptyPage);
 
         mockMvc.perform(get("/api/records"))
                 .andExpect(status().isOk())
@@ -120,7 +122,6 @@ class FinancialRecordControllerTest {
                 .andExpect(status().isForbidden());
     }
 
-    // ========== POST /api/records ==========
     @Test
     @WithMockUser(roles = "ADMIN")
     void createRecord_AsAdmin_ReturnsCreated() throws Exception {
@@ -158,13 +159,9 @@ class FinancialRecordControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(invalidRequest)))
                 .andExpect(status().isBadRequest())
-                // Now the response will contain the field errors as map keys
-//                .andExpect(jsonPath("$.amount").exists())
-//                .andExpect(jsonPath("$.type").exists())
                 .andExpect(jsonPath("$.category").exists());
     }
 
-    // ========== PUT /api/records/{id} ==========
     @Test
     @WithMockUser(roles = "ADMIN")
     void updateRecord_AsAdmin_ReturnsOk() throws Exception {
@@ -200,10 +197,9 @@ class FinancialRecordControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(invalid)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.amount").exists());  // @Positive violation
+                .andExpect(jsonPath("$.amount").exists());
     }
 
-    // ========== DELETE /api/records/{id} ==========
     @Test
     @WithMockUser(roles = "ADMIN")
     void deleteRecord_AsAdmin_ReturnsNoContent() throws Exception {

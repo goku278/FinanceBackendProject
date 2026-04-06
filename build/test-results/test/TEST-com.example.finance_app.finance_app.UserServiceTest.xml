@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.finance_app.finance_app.UserServiceTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-04-06T07:42:20" hostname="Mac.lan" time="0.54">
+  <properties/>
+  <testcase name="getAllUsers_ReturnsListOfUserResponses()" classname="com.example.finance_app.finance_app.UserServiceTest" time="0.513"/>
+  <testcase name="updateUserRoles_UserNotFound_ThrowsResourceNotFoundException()" classname="com.example.finance_app.finance_app.UserServiceTest" time="0.005"/>
+  <testcase name="createUser_Success()" classname="com.example.finance_app.finance_app.UserServiceTest" time="0.005"/>
+  <testcase name="getUserById_Success()" classname="com.example.finance_app.finance_app.UserServiceTest" time="0.002"/>
+  <testcase name="updateUserStatus_Success()" classname="com.example.finance_app.finance_app.UserServiceTest" time="0.003"/>
+  <testcase name="getAllUsers_EmptyList_ReturnsEmptyList()" classname="com.example.finance_app.finance_app.UserServiceTest" time="0.001"/>
+  <testcase name="createUser_DuplicateUsername_ThrowsBadRequestException()" classname="com.example.finance_app.finance_app.UserServiceTest" time="0.001"/>
+  <testcase name="getUserById_NotFound_ThrowsResourceNotFoundException()" classname="com.example.finance_app.finance_app.UserServiceTest" time="0.002"/>
+  <testcase name="updateUserStatus_UserNotFound_ThrowsResourceNotFoundException()" classname="com.example.finance_app.finance_app.UserServiceTest" time="0.001"/>
+  <testcase name="updateUserRoles_Success()" classname="com.example.finance_app.finance_app.UserServiceTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[WARNING: A Java agent has been loaded dynamically (/Users/biswadeep/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.14.9/dfb8707031008535048bad2b69735f46d0b6c5e5/byte-buddy-agent-1.14.9.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+]]></system-err>
+</testsuite>

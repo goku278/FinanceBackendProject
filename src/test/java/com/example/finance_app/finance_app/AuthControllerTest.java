@@ -4,12 +4,14 @@ import com.example.finance_app.finance_app.config.CustomUserDetailsService;
 import com.example.finance_app.finance_app.config.JwtUtil;
 import com.example.finance_app.finance_app.config.SecurityConfig;
 import com.example.finance_app.finance_app.controller.AuthController;
+import com.example.finance_app.finance_app.entity.BlacklistedToken;
 import com.example.finance_app.finance_app.entity.RefreshToken;
 import com.example.finance_app.finance_app.entity.User;
 import com.example.finance_app.finance_app.exceptions.GlobalExceptionHandler;
 import com.example.finance_app.finance_app.exceptions.TokenRefreshException;
 import com.example.finance_app.finance_app.models.UserRole;
 import com.example.finance_app.finance_app.models.dto.AuthDTO;
+import com.example.finance_app.finance_app.repository.BlacklistedTokenRepository;
 import com.example.finance_app.finance_app.service.RefreshTokenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -53,7 +55,9 @@ class AuthControllerTest {
     @MockBean
     private RefreshTokenService refreshTokenService;
 
-    // Required for security filter chain (even if not directly used in these tests)
+    @MockBean
+    private BlacklistedTokenRepository blacklistedTokenRepository;
+
     @MockBean
     private CustomUserDetailsService customUserDetailsService;
 
@@ -83,7 +87,6 @@ class AuthControllerTest {
                 .build();
     }
 
-    // ========== POST /auth/login ==========
     @Test
     void login_Success() throws Exception {
         AuthDTO.LoginRequest loginRequest = new AuthDTO.LoginRequest(username, password);
@@ -117,14 +120,14 @@ class AuthControllerTest {
         mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loginRequest)))
-                .andExpect(status().is5xxServerError());
+                .andExpect(status().isInternalServerError());
 
         verify(refreshTokenService, never()).createRefreshToken(any());
     }
 
     @Test
     void login_ValidationError_ReturnsBadRequest() throws Exception {
-        AuthDTO.LoginRequest invalidRequest = new AuthDTO.LoginRequest("", ""); // blank username/password
+        AuthDTO.LoginRequest invalidRequest = new AuthDTO.LoginRequest("", "");
 
         mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -136,7 +139,6 @@ class AuthControllerTest {
         verify(authenticationManager, never()).authenticate(any());
     }
 
-    // ========== POST /auth/refresh ==========
     @Test
     void refreshToken_Success() throws Exception {
         AuthDTO.RefreshTokenRequest request = new AuthDTO.RefreshTokenRequest(refreshTokenString);
@@ -188,7 +190,7 @@ class AuthControllerTest {
 
     @Test
     void refreshToken_ValidationError_ReturnsBadRequest() throws Exception {
-        AuthDTO.RefreshTokenRequest invalidRequest = new AuthDTO.RefreshTokenRequest(""); // blank token
+        AuthDTO.RefreshTokenRequest invalidRequest = new AuthDTO.RefreshTokenRequest("");
 
         mockMvc.perform(post("/auth/refresh")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -197,7 +199,6 @@ class AuthControllerTest {
                 .andExpect(jsonPath("$.refreshToken").exists());
     }
 
-    // ========== POST /auth/logout ==========
     @Test
     void logout_Success() throws Exception {
         AuthDTO.RefreshTokenRequest request = new AuthDTO.RefreshTokenRequest(refreshTokenString);
@@ -215,7 +216,6 @@ class AuthControllerTest {
 
     @Test
     void logout_TokenNotFound_StillOk() throws Exception {
-        // revokeRefreshToken does nothing if token not found, but should still return OK
         AuthDTO.RefreshTokenRequest request = new AuthDTO.RefreshTokenRequest("non-existent-token");
 
         doNothing().when(refreshTokenService).revokeRefreshToken("non-existent-token");

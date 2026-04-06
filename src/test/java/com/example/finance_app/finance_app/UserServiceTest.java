@@ -59,7 +59,6 @@ class UserServiceTest {
                 .build();
     }
 
-    // ========== createUser ==========
     @Test
     void createUser_Success() {
         when(userRepository.existsByUsername(createRequest.getUsername())).thenReturn(false);
@@ -96,7 +95,6 @@ class UserServiceTest {
         verify(userRepository, never()).save(any());
     }
 
-    // ========== updateUserRoles ==========
     @Test
     void updateUserRoles_Success() {
         Set<UserRole> newRoles = Set.of(UserRole.ROLE_ADMIN, UserRole.ROLE_ANALYST);
@@ -119,7 +117,6 @@ class UserServiceTest {
         verify(userRepository, never()).save(any());
     }
 
-    // ========== updateUserStatus ==========
     @Test
     void updateUserStatus_Success() {
         when(userRepository.findById(userId)).thenReturn(Optional.of(testUser));
@@ -140,7 +137,6 @@ class UserServiceTest {
         verify(userRepository, never()).save(any());
     }
 
-    // ========== getUserById ==========
     @Test
     void getUserById_Success() {
         when(userRepository.findById(userId)).thenReturn(Optional.of(testUser));
@@ -159,7 +155,6 @@ class UserServiceTest {
                 () -> userService.getUserById(userId));
     }
 
-    // ========== getAllUsers ==========
     @Test
     void getAllUsers_ReturnsListOfUserResponses() {
         User anotherUser = User.builder()

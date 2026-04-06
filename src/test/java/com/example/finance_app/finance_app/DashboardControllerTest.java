@@ -8,7 +8,9 @@ import com.example.finance_app.finance_app.exceptions.GlobalExceptionHandler;
 import com.example.finance_app.finance_app.models.TransactionType;
 import com.example.finance_app.finance_app.models.dto.DashboardDTO;
 import com.example.finance_app.finance_app.models.dto.FinancialRecordDTO;
+import com.example.finance_app.finance_app.repository.BlacklistedTokenRepository;
 import com.example.finance_app.finance_app.service.FinancialRecordService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,6 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -40,12 +41,14 @@ class DashboardControllerTest {
     @MockBean
     private FinancialRecordService recordService;
 
-    // Required dependencies for security filter chain
     @MockBean
     private JwtUtil jwtUtil;
 
     @MockBean
     private CustomUserDetailsService customUserDetailsService;
+
+    @MockBean
+    private BlacklistedTokenRepository blacklistedTokenRepository;
 
     private DashboardDTO.Summary summary;
     private List<DashboardDTO.CategoryTotal> categoryTotals;
@@ -80,7 +83,6 @@ class DashboardControllerTest {
         );
     }
 
-    // ========== /dashboard/summary ==========
     @Test
     @WithMockUser(roles = "VIEWER")
     void getSummary_AsViewer_ReturnsSummary() throws Exception {
@@ -110,13 +112,6 @@ class DashboardControllerTest {
                 .andExpect(status().isOk());
     }
 
-    /*@Test
-    void getSummary_Unauthenticated_ReturnsUnauthorized() throws Exception {
-        mockMvc.perform(get("/api/dashboard/summary"))
-                .andExpect(status().isUnauthorized());
-    }*/
-
-    // ========== /dashboard/category-totals ==========
     @Test
     @WithMockUser(roles = "VIEWER")
     void getCategoryTotals_DefaultTypeExpense() throws Exception {
@@ -130,23 +125,21 @@ class DashboardControllerTest {
                 .andExpect(jsonPath("$[1].category", is("Entertainment")));
     }
 
-    /*    @Test
-        @WithMockUser(roles = "ANALYST")
-        void getCategoryTotals_WithTypeIncome() throws Exception {
-            List<DashboardDTO.CategoryTotal> incomeTotals = List.of(
-                    DashboardDTO.CategoryTotal.builder().category("Salary").total(new BigDecimal("5000")).build()
-            );
-            when(recordService.getCategoryTotals(TransactionType.INCOME)).thenReturn(incomeTotals);
+    @Test
+    @WithMockUser(roles = "ANALYST")
+    void getCategoryTotals_WithTypeIncome() throws Exception {
+        List<DashboardDTO.CategoryTotal> incomeTotals = List.of(
+                DashboardDTO.CategoryTotal.builder().category("Salary").total(new BigDecimal("5000")).build()
+        );
+        when(recordService.getCategoryTotals(TransactionType.INCOME)).thenReturn(incomeTotals);
 
-            mockMvc.perform(get("/api/dashboard/category-totals")
-                            .param("type", "INCOME"))
-                    .andExpect(status().isOk())
-                    .andExpect(jsonPath("$", hasSize(1)))
-                    .andExpect(jsonPath("$[0].category", is("Salary")))
-                    .andExpect(jsonPath("$[0].total", is(5000.00)));
-        }
-    */
-    // ========== /dashboard/recent-activity ==========
+        mockMvc.perform(get("/api/dashboard/category-totals")
+                        .param("type", "INCOME"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].category", is("Salary")));
+    }
+
     @Test
     @WithMockUser(roles = "VIEWER")
     void getRecentActivity_ReturnsList() throws Exception {
@@ -172,7 +165,6 @@ class DashboardControllerTest {
                 .andExpect(jsonPath("$", hasSize(0)));
     }
 
-    // ========== /dashboard/monthly-trends ==========
     @Test
     @WithMockUser(roles = "VIEWER")
     void getMonthlyTrends_ReturnsList() throws Exception {
