@@ -1,0 +1,1359 @@
+{
+  "info": {
+    "_postman_id": "383569f0-1cf4-4e37-92c2-942e991e08fd",
+    "name": "Finance Backend API",
+    "description": "Complete API for financial records management with JWT authentication, role-based access control, and dashboard summaries.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "48013923",
+    "_collection_link": "https://go.postman.co/collection/48013923-383569f0-1cf4-4e37-92c2-942e991e08fd?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const jsonData = pm.response.json();",
+                  "pm.environment.set('accessToken', jsonData.accessToken);",
+                  "pm.environment.set('refreshToken', jsonData.refreshToken);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"viewer\",\n  \"password\": \"viewer123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"viewer\",\n  \"password\": \"viewer123\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/login",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"accessToken\": \"eyJhbGciOiJIUzUxMiJ9...\",\n  \"refreshToken\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"tokenType\": \"Bearer\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Refresh Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const jsonData = pm.response.json();",
+                  "pm.environment.set('accessToken', jsonData.accessToken);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"40c2daed-fd12-47de-8f91-6ff06be9ab1f\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/refresh",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "refresh"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"refreshToken\": \"40c2daed-fd12-47de-8f91-6ff06be9ab1f\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/refresh",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "refresh"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"accessToken\": \"new_access_token_here\",\n  \"refreshToken\": \"same_refresh_token\",\n  \"tokenType\": \"Bearer\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ0eXBlIjoiYWNjZXNzIiwic3ViIjoidmlld2VyIiwiaWF0IjoxNzc1NDY0MjExLCJleHAiOjE3NzU0NjUxMTF9.xsUOlyPLQxBzbLKKRXN51S3WYavBxRq2M9A9PNUcZbTydSPKQ9zD42h47cn301RE3qSfnKTJxywGTaOJ9rki0Q",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"821cfabd-bf19-4d2f-9ad3-324035b955e7\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/logout",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ0eXBlIjoiYWNjZXNzIiwic3ViIjoidmlld2VyIiwiaWF0IjoxNzc1NDY0MjExLCJleHAiOjE3NzU0NjUxMTF9.xsUOlyPLQxBzbLKKRXN51S3WYavBxRq2M9A9PNUcZbTydSPKQ9zD42h47cn301RE3qSfnKTJxywGTaOJ9rki0Q",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"refreshToken\": \"821cfabd-bf19-4d2f-9ad3-324035b955e7\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/logout",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "logout"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
+              "body": "Logged out successfully"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Financial Records",
+      "item": [
+        {
+          "name": "Get All Records (with filters & pagination)",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ0eXBlIjoiYWNjZXNzIiwic3ViIjoiYW5hbHlzdCIsImlhdCI6MTc3NTQ2Mzc0NCwiZXhwIjoxNzc1NDY0NjQ0fQ.5gH4MlwXzs291BcXjcRGILYS6H3TIcnAeFjMSlU-xXdFmatKcyqh4sM-Pwaizddzq-oz_kcMBkoehFfJwJMQpw"
+              },
+              {
+                "key": "",
+                "value": "http://localhost:8181/api/records?type=INCOME&page=0&size=5",
+                "description": "http://localhost:8181/api/records?startDate=2025-03-01&endDate=2025-03-31&type=EXPENSE&category=&page=0&size=10",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8181/api/records?startDate=2025-03-01&endDate=2025-03-31",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8181",
+              "path": [
+                "api",
+                "records"
+              ],
+              "query": [
+                {
+                  "key": "startDate",
+                  "value": "2025-03-01"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2025-03-31"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ0eXBlIjoiYWNjZXNzIiwic3ViIjoiYW5hbHlzdCIsImlhdCI6MTc3NTQ2Mzc0NCwiZXhwIjoxNzc1NDY0NjQ0fQ.5gH4MlwXzs291BcXjcRGILYS6H3TIcnAeFjMSlU-xXdFmatKcyqh4sM-Pwaizddzq-oz_kcMBkoehFfJwJMQpw"
+                  },
+                  {
+                    "key": "",
+                    "value": "http://localhost:8181/api/records?type=INCOME&page=0&size=5",
+                    "description": "http://localhost:8181/api/records?startDate=2025-03-01&endDate=2025-03-31&type=EXPENSE&category=&page=0&size=10",
+                    "type": "text",
+                    "disabled": true
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8181/api/records?startDate=2025-03-01&endDate=2025-03-31",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8181",
+                  "path": [
+                    "api",
+                    "records"
+                  ],
+                  "query": [
+                    {
+                      "key": "startDate",
+                      "value": "2025-03-01"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "2025-03-31"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"content\": [\n    {\n      \"id\": 2,\n      \"amount\": 150.00,\n      \"type\": \"EXPENSE\",\n      \"category\": \"Groceries\",\n      \"date\": \"2025-03-05\",\n      \"description\": \"Supermarket\",\n      \"createdAt\": \"2025-04-03T10:15:30\",\n      \"updatedAt\": \"2025-04-03T10:15:30\",\n      \"deleted\": false\n    }\n  ],\n  \"pageable\": { \"pageNumber\": 0, \"pageSize\": 10 },\n  \"totalElements\": 5,\n  \"totalPages\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get All Records (with pagination)",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ0eXBlIjoiYWNjZXNzIiwic3ViIjoiYWRtaW4iLCJpYXQiOjE3NzU0NTY2MjEsImV4cCI6MTc3NTQ1NzUyMX0.RtKpijvOrEfD3anXdJys4boDrJFeqhmlnSib8sFvdwKkNseezsHmerTEWK1Jj1FUdi6sgITZARWUuZORa8yIUg"
+              },
+              {
+                "key": "",
+                "value": "",
+                "description": "http://localhost:8181/api/records?startDate=2025-03-01&endDate=2025-03-31&type=EXPENSE&category=&page=0&size=10",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8181/api/records?page=0&size=10",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8181",
+              "path": [
+                "api",
+                "records"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ0eXBlIjoiYWNjZXNzIiwic3ViIjoiYWRtaW4iLCJpYXQiOjE3NzU0NTY2MjEsImV4cCI6MTc3NTQ1NzUyMX0.RtKpijvOrEfD3anXdJys4boDrJFeqhmlnSib8sFvdwKkNseezsHmerTEWK1Jj1FUdi6sgITZARWUuZORa8yIUg"
+                  },
+                  {
+                    "key": "",
+                    "value": "",
+                    "description": "http://localhost:8181/api/records?startDate=2025-03-01&endDate=2025-03-31&type=EXPENSE&category=&page=0&size=10",
+                    "type": "text",
+                    "disabled": true
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8181/api/records?page=0&size=10",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8181",
+                  "path": [
+                    "api",
+                    "records"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"content\": [\n    {\n      \"id\": 2,\n      \"amount\": 150.00,\n      \"type\": \"EXPENSE\",\n      \"category\": \"Groceries\",\n      \"date\": \"2025-03-05\",\n      \"description\": \"Supermarket\",\n      \"createdAt\": \"2025-04-03T10:15:30\",\n      \"updatedAt\": \"2025-04-03T10:15:30\",\n      \"deleted\": false\n    }\n  ],\n  \"pageable\": { \"pageNumber\": 0, \"pageSize\": 10 },\n  \"totalElements\": 5,\n  \"totalPages\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get All Records (with search options or even with filter options)",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ0eXBlIjoiYWNjZXNzIiwic3ViIjoiYWRtaW4iLCJpYXQiOjE3NzU0NjMyNzMsImV4cCI6MTc3NTQ2NDE3M30.X_aVoq0jpEsBFzCJUWMc6fxbhevQ0upPeTGI_kxd4p6R6vN5Qd0eQEbS8QjenLTpwyjtSr_kb2H7CaJbepUrcg"
+              },
+              {
+                "key": "",
+                "value": "",
+                "description": "http://localhost:8181/api/records?startDate=2025-03-01&endDate=2025-03-31&type=EXPENSE&category=&page=0&size=10",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/records",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "records"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ0eXBlIjoiYWNjZXNzIiwic3ViIjoiYWRtaW4iLCJpYXQiOjE3NzU0NjMyNzMsImV4cCI6MTc3NTQ2NDE3M30.X_aVoq0jpEsBFzCJUWMc6fxbhevQ0upPeTGI_kxd4p6R6vN5Qd0eQEbS8QjenLTpwyjtSr_kb2H7CaJbepUrcg"
+                  },
+                  {
+                    "key": "",
+                    "value": "",
+                    "description": "http://localhost:8181/api/records?startDate=2025-03-01&endDate=2025-03-31&type=EXPENSE&category=&page=0&size=10",
+                    "type": "text",
+                    "disabled": true
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/records",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "records"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"content\": [\n    {\n      \"id\": 2,\n      \"amount\": 150.00,\n      \"type\": \"EXPENSE\",\n      \"category\": \"Groceries\",\n      \"date\": \"2025-03-05\",\n      \"description\": \"Supermarket\",\n      \"createdAt\": \"2025-04-03T10:15:30\",\n      \"updatedAt\": \"2025-04-03T10:15:30\",\n      \"deleted\": false\n    }\n  ],\n  \"pageable\": { \"pageNumber\": 0, \"pageSize\": 10 },\n  \"totalElements\": 5,\n  \"totalPages\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "Create Record (Admin only)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ0eXBlIjoiYWNjZXNzIiwic3ViIjoiYWRtaW4iLCJpYXQiOjE3NzU0NjMyNzMsImV4cCI6MTc3NTQ2NDE3M30.X_aVoq0jpEsBFzCJUWMc6fxbhevQ0upPeTGI_kxd4p6R6vN5Qd0eQEbS8QjenLTpwyjtSr_kb2H7CaJbepUrcg"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 150.00,\n  \"type\": \"EXPENSE\",\n  \"category\": \"MERCHANDISE\",\n  \"date\": \"2025-04-04\",\n  \"description\": \"NEW CLOTHES\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/records",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "records"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Created",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ0eXBlIjoiYWNjZXNzIiwic3ViIjoiYWRtaW4iLCJpYXQiOjE3NzU0NjMyNzMsImV4cCI6MTc3NTQ2NDE3M30.X_aVoq0jpEsBFzCJUWMc6fxbhevQ0upPeTGI_kxd4p6R6vN5Qd0eQEbS8QjenLTpwyjtSr_kb2H7CaJbepUrcg"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"amount\": 150.00,\n  \"type\": \"EXPENSE\",\n  \"category\": \"MERCHANDISE\",\n  \"date\": \"2025-04-04\",\n  \"description\": \"NEW CLOTHES\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/records",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "records"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"id\": 6,\n  \"amount\": 499.99,\n  \"type\": \"EXPENSE\",\n  \"category\": \"Electronics\",\n  \"date\": \"2025-04-04\",\n  \"description\": \"New mouse\",\n  \"createdAt\": \"2025-04-04T09:22:15\",\n  \"updatedAt\": \"2025-04-04T09:22:15\",\n  \"deleted\": false\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Record (Admin only)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ0eXBlIjoiYWNjZXNzIiwic3ViIjoidmlld2VyIiwiaWF0IjoxNzc1NDYzNjE4LCJleHAiOjE3NzU0NjQ1MTh9.eyRmGa4z1TXaf1JBgfFEZvn-oQDkFnMgU2Mfc8o4MCW1ZCjexfwCIxQ32wD6obICHXb9--_uLGZYtpRSe7LdVQ"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 100.00,\n  \"type\": \"EXPENSE\",\n  \"category\": \"Merchandise\",\n  \"date\": \"2025-04-04\",\n  \"description\": \"NEW GARMENTS\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/records/9",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "records",
+                "9"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "OK",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ0eXBlIjoiYWNjZXNzIiwic3ViIjoidmlld2VyIiwiaWF0IjoxNzc1NDYzNjE4LCJleHAiOjE3NzU0NjQ1MTh9.eyRmGa4z1TXaf1JBgfFEZvn-oQDkFnMgU2Mfc8o4MCW1ZCjexfwCIxQ32wD6obICHXb9--_uLGZYtpRSe7LdVQ"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"amount\": 100.00,\n  \"type\": \"EXPENSE\",\n  \"category\": \"Merchandise\",\n  \"date\": \"2025-04-04\",\n  \"description\": \"NEW GARMENTS\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/records/9",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "records",
+                    "9"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"id\": 6,\n  \"amount\": 129.99,\n  \"type\": \"EXPENSE\",\n  \"category\": \"Electronics\",\n  \"date\": \"2025-04-04\",\n  \"description\": \"Wireless mouse\",\n  ...\n}"
+            }
+          ]
+        },
+        {
+          "name": "Delete Record (Admin only)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ0eXBlIjoiYWNjZXNzIiwic3ViIjoiYWRtaW4iLCJpYXQiOjE3NzU0NjMyNzMsImV4cCI6MTc3NTQ2NDE3M30.X_aVoq0jpEsBFzCJUWMc6fxbhevQ0upPeTGI_kxd4p6R6vN5Qd0eQEbS8QjenLTpwyjtSr_kb2H7CaJbepUrcg"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/records/9",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "records",
+                "9"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "No Content",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ0eXBlIjoiYWNjZXNzIiwic3ViIjoiYWRtaW4iLCJpYXQiOjE3NzU0NjMyNzMsImV4cCI6MTc3NTQ2NDE3M30.X_aVoq0jpEsBFzCJUWMc6fxbhevQ0upPeTGI_kxd4p6R6vN5Qd0eQEbS8QjenLTpwyjtSr_kb2H7CaJbepUrcg"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/records/9",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "records",
+                    "9"
+                  ]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "item": [
+        {
+          "name": "Summary (Total Income/Expense/Net)",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ0eXBlIjoiYWNjZXNzIiwic3ViIjoidmlld2VyIiwiaWF0IjoxNzc1NDY0MjkzLCJleHAiOjE3NzU0NjUxOTN9.WFcEbaV-62drWmd4ZShsjib5-WJh_0uWU40JJ3mIZw95DyWetutVskxWiuhtWDczOCZcuirTf3b0e6QN-5zk5Q"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/dashboard/summary",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "dashboard",
+                "summary"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ0eXBlIjoiYWNjZXNzIiwic3ViIjoidmlld2VyIiwiaWF0IjoxNzc1NDY0MjkzLCJleHAiOjE3NzU0NjUxOTN9.WFcEbaV-62drWmd4ZShsjib5-WJh_0uWU40JJ3mIZw95DyWetutVskxWiuhtWDczOCZcuirTf3b0e6QN-5zk5Q"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/dashboard/summary",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "dashboard",
+                    "summary"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"totalIncome\": 5500.00,\n  \"totalExpense\": 430.00,\n  \"netBalance\": 5070.00\n}"
+            }
+          ]
+        },
+        {
+          "name": "Category Totals (default EXPENSE)",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ0eXBlIjoiYWNjZXNzIiwic3ViIjoidmlld2VyIiwiaWF0IjoxNzc1NDY0MDIwLCJleHAiOjE3NzU0NjQ5MjB9.cN9G0IpheXbwq2VjeQePxDGfrZsHF43sJTZvR_S-y5V0X0xbhaJDbbYQ8W0iBP-Q8Yv-uJb9L11NGalyJX5Jqw"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/dashboard/category-totals?type=EXPENSE",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "dashboard",
+                "category-totals"
+              ],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "EXPENSE"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ0eXBlIjoiYWNjZXNzIiwic3ViIjoidmlld2VyIiwiaWF0IjoxNzc1NDY0MDIwLCJleHAiOjE3NzU0NjQ5MjB9.cN9G0IpheXbwq2VjeQePxDGfrZsHF43sJTZvR_S-y5V0X0xbhaJDbbYQ8W0iBP-Q8Yv-uJb9L11NGalyJX5Jqw"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/dashboard/category-totals?type=EXPENSE",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "dashboard",
+                    "category-totals"
+                  ],
+                  "query": [
+                    {
+                      "key": "type",
+                      "value": "EXPENSE"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
+              "body": "[\n  { \"category\": \"Groceries\", \"total\": 150.00 },\n  { \"category\": \"Entertainment\", \"total\": 80.00 },\n  { \"category\": \"Utilities\", \"total\": 200.00 }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Recent Activity (last 5 records)",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ0eXBlIjoiYWNjZXNzIiwic3ViIjoiYW5hbHlzdCIsImlhdCI6MTc3NTM5OTg1NiwiZXhwIjoxNzc1NDAwNzU2fQ.ppdBEVLWfToz6FZctgVrijMFn-qlxplkZR3IxmSLI7TEJ8rOfUd6MIvGAv6Wt6F2PgK4qD69x2KodRrrT8m2Kg"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/dashboard/recent-activity",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "dashboard",
+                "recent-activity"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ0eXBlIjoiYWNjZXNzIiwic3ViIjoiYW5hbHlzdCIsImlhdCI6MTc3NTM5OTg1NiwiZXhwIjoxNzc1NDAwNzU2fQ.ppdBEVLWfToz6FZctgVrijMFn-qlxplkZR3IxmSLI7TEJ8rOfUd6MIvGAv6Wt6F2PgK4qD69x2KodRrrT8m2Kg"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/dashboard/recent-activity",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "dashboard",
+                    "recent-activity"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": 5,\n    \"amount\": 200.00,\n    \"type\": \"EXPENSE\",\n    \"category\": \"Utilities\",\n    \"date\": \"2025-02-20\",\n    \"description\": \"Electricity bill\"\n  },\n  ...\n]"
+            }
+          ]
+        },
+        {
+          "name": "Monthly Trends",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ0eXBlIjoiYWNjZXNzIiwic3ViIjoiYW5hbHlzdCIsImlhdCI6MTc3NTM5OTg1NiwiZXhwIjoxNzc1NDAwNzU2fQ.ppdBEVLWfToz6FZctgVrijMFn-qlxplkZR3IxmSLI7TEJ8rOfUd6MIvGAv6Wt6F2PgK4qD69x2KodRrrT8m2Kg"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/dashboard/monthly-trends",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "dashboard",
+                "monthly-trends"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ0eXBlIjoiYWNjZXNzIiwic3ViIjoiYW5hbHlzdCIsImlhdCI6MTc3NTM5OTg1NiwiZXhwIjoxNzc1NDAwNzU2fQ.ppdBEVLWfToz6FZctgVrijMFn-qlxplkZR3IxmSLI7TEJ8rOfUd6MIvGAv6Wt6F2PgK4qD69x2KodRrrT8m2Kg"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/dashboard/monthly-trends",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "dashboard",
+                    "monthly-trends"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
+              "body": "[\n  { \"year\": 2025, \"month\": 3, \"income\": 2500.00, \"expense\": 230.00 },\n  { \"year\": 2025, \"month\": 2, \"income\": 3000.00, \"expense\": 200.00 }\n]"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Admin - User Management",
+      "item": [
+        {
+          "name": "Get All Users",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ0eXBlIjoiYWNjZXNzIiwic3ViIjoiYWRtaW4iLCJpYXQiOjE3NzU0NjQxNjEsImV4cCI6MTc3NTQ2NTA2MX0.KrcUyf0YpiHKJp0xdPpimRuA83LNgS2PzuJIxWGSG5bIZf6AYgo0ZKRGdCCMfNHIZ34U3IBJuZpDu2bSTAOS5A"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "users"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ0eXBlIjoiYWNjZXNzIiwic3ViIjoiYWRtaW4iLCJpYXQiOjE3NzU0NjQxNjEsImV4cCI6MTc3NTQ2NTA2MX0.KrcUyf0YpiHKJp0xdPpimRuA83LNgS2PzuJIxWGSG5bIZf6AYgo0ZKRGdCCMfNHIZ34U3IBJuZpDu2bSTAOS5A"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/users",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "users"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": 1,\n    \"username\": \"admin\",\n    \"email\": \"admin@finance.com\",\n    \"active\": true,\n    \"roles\": [\"ROLE_ADMIN\"]\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Create New User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ0eXBlIjoiYWNjZXNzIiwic3ViIjoiYWRtaW4iLCJpYXQiOjE3NzUzOTc0MTksImV4cCI6MTc3NTM5ODMxOX0.ehvoav9XAe_Lj5zyTV-eD4csrSCyaFuzDzc9dRoVNllaOWVZLsElEonaT8K_Rlr9O-e3uQG71gi3CTrHGh3KWw"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"viewer4\",\n  \"password\": \"viewer123\",\n  \"email\": \"viewer4@finance.com\",\n  \"roles\": [\"ROLE_VIEWER\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "users"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Created",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ0eXBlIjoiYWNjZXNzIiwic3ViIjoiYWRtaW4iLCJpYXQiOjE3NzUzOTc0MTksImV4cCI6MTc3NTM5ODMxOX0.ehvoav9XAe_Lj5zyTV-eD4csrSCyaFuzDzc9dRoVNllaOWVZLsElEonaT8K_Rlr9O-e3uQG71gi3CTrHGh3KWw"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"viewer4\",\n  \"password\": \"viewer123\",\n  \"email\": \"viewer4@finance.com\",\n  \"roles\": [\"ROLE_VIEWER\"]\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/users",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "users"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"id\": 2,\n  \"username\": \"analyst1\",\n  \"email\": \"analyst1@finance.com\",\n  \"active\": true,\n  \"roles\": [\"ROLE_ANALYST\"]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update User Roles",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ0eXBlIjoiYWNjZXNzIiwic3ViIjoiYWRtaW4iLCJpYXQiOjE3NzU0NjM5NjYsImV4cCI6MTc3NTQ2NDg2Nn0.66vj63q9Z4Msvp_rPE9y6pQY9cicabSyO-ZbHztmkZcylyBZoILAKUqeQX07lyFX6C-Z0fwBqSj8Dsg9BF-cpA"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "description": "{\"roles\": [\"ROLE_ANALYST\", \"ROLE_ADMIN\", \"ROLE_VIEWER\"]}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"roles\": [\"ROLE_VIEWER\"]}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8181/api/admin/users/2/roles",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8181",
+              "path": [
+                "api",
+                "admin",
+                "users",
+                "2",
+                "roles"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "OK",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ0eXBlIjoiYWNjZXNzIiwic3ViIjoiYWRtaW4iLCJpYXQiOjE3NzU0NjM5NjYsImV4cCI6MTc3NTQ2NDg2Nn0.66vj63q9Z4Msvp_rPE9y6pQY9cicabSyO-ZbHztmkZcylyBZoILAKUqeQX07lyFX6C-Z0fwBqSj8Dsg9BF-cpA"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": "{\"roles\": [\"ROLE_ANALYST\", \"ROLE_ADMIN\", \"ROLE_VIEWER\"]}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"roles\": [\"ROLE_VIEWER\"]}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8181/api/admin/users/2/roles",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8181",
+                  "path": [
+                    "api",
+                    "admin",
+                    "users",
+                    "2",
+                    "roles"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"id\": 2,\n  \"username\": \"analyst1\",\n  \"email\": \"analyst1@finance.com\",\n  \"active\": true,\n  \"roles\": [\"ROLE_VIEWER\", \"ROLE_ANALYST\"]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update User Status (Activate/Deactivate)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ0eXBlIjoiYWNjZXNzIiwic3ViIjoiYWRtaW4iLCJpYXQiOjE3NzU0NjQxNjEsImV4cCI6MTc3NTQ2NTA2MX0.KrcUyf0YpiHKJp0xdPpimRuA83LNgS2PzuJIxWGSG5bIZf6AYgo0ZKRGdCCMfNHIZ34U3IBJuZpDu2bSTAOS5A"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"active\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/users/2/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "users",
+                "2",
+                "status"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "OK",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ0eXBlIjoiYWNjZXNzIiwic3ViIjoiYWRtaW4iLCJpYXQiOjE3NzU0NjQxNjEsImV4cCI6MTc3NTQ2NTA2MX0.KrcUyf0YpiHKJp0xdPpimRuA83LNgS2PzuJIxWGSG5bIZf6AYgo0ZKRGdCCMfNHIZ34U3IBJuZpDu2bSTAOS5A"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"active\": true\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/users/2/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "users",
+                    "2",
+                    "status"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"id\": 2,\n  \"username\": \"analyst1\",\n  \"email\": \"analyst1@finance.com\",\n  \"active\": false,\n  \"roles\": [\"ROLE_VIEWER\", \"ROLE_ANALYST\"]\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ]
+}
